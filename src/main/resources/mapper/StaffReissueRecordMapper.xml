@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.sinsimiot.dao.StaffReissueRecordMapper">
+    <resultMap id="BaseResultMap" type="com.eservice.sinsimiot.model.staff_reissue_record.StaffReissueRecord">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="staff_id" jdbcType="VARCHAR" property="staffId"/>
+        <result column="staff_name" jdbcType="VARCHAR" property="staffName"/>
+        <result column="staff_num" jdbcType="VARCHAR" property="staffNum"/>
+        <result column="staff_park_name" jdbcType="VARCHAR" property="staffParkName"/>
+        <result column="staff_park_id" jdbcType="VARCHAR" property="staffParkId"/>
+        <result column="staff_tag_name" jdbcType="VARCHAR" property="staffTagName"/>
+        <result column="staff_tag_id" jdbcType="VARCHAR" property="staffTagId"/>
+        <result column="sign_time" jdbcType="VARCHAR" property="signTime"/>
+        <result column="sign_out_time" jdbcType="VARCHAR" property="signOutTime"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <select id="fetchReissueRecord" resultMap="BaseResultMap">
+        select * from staff_reissue_record where 1=1
+        <if test="condition !=null and condition !=''">
+            and `staff_name` like concat('%',#{condition},'%')
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_num` = #{staffNum}
+        </if>
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `staff_tag_id` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="parkId != null and parkId != ''">
+            and staff_park_id=#{parkId}
+        </if>
+        <if test="signTime != null and signOutTime != ''">
+            and `sign_time` BETWEEN #{signTime} AND #{signOutTime}
+        </if>
+        <if test="status !=null and status !=''">
+            and `status`=#{status}
+        </if>
+        ORDER BY `sign_time` DESC
+    </select>
+
+    <select id="searchRecord" resultMap="BaseResultMap">
+        select * from staff_reissue_record where `staff_num` = #{staffNum}
+
+        <if test="parkId != null and parkId != ''">
+            and staff_park_id=#{parkId}
+        </if>
+        <if test="signTime != null and signTime != ''">
+            and `sign_time` like concat('',#{signTime},'%')
+        </if>
+        <if test="status !=null and status !=''">
+            and `status`=#{status}
+        </if>
+        ORDER BY `sign_time` DESC
+    </select>
+</mapper>

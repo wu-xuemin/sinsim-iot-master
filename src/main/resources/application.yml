@@ -1,0 +1,119 @@
+spring:
+  application:
+    name: master
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 1
+      max-file-size: 2048MB
+      max-request-size: 2048MB
+
+logging:
+  file: ./log/spring.log
+
+date:
+  logger: 15
+  image: 30
+
+server:
+  port: 9010
+#  port: 9011
+  servlet:
+    context-path: /api
+
+---
+spring:
+  profiles: dev
+
+  datasource:
+#    url: jdbc:mysql://10.250.62.230:3306/yttps_taikang?useSSL=false&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/sinsim-iot-master?useSSL=false&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: hello123!
+#    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    tomcat:
+      test-on-borrow: true
+      validation-query: SELECT 1
+      validation-query-timeout: 1
+
+  redis:
+#    host: 10.250.62.230
+    host: 127.0.0.1
+    timeout: 5000ms
+    port: 6379
+    password: hello123!
+
+park:
+#  ip: https://10.250.62.230:9812
+#  host: 10.250.62.230
+  ip: http://127.0.0.1:9812
+  host: 127.0.0.1
+  port: 9812
+  username: partner
+  password: partner
+
+path:
+  logger: ./log/
+  images: ./images/
+  upload: ./upload/
+  excel: ./excel/
+  name: staffInfo.xlsx
+  export: ./export/
+  zip: ./zip/
+
+url:
+  excel: /excel/
+  zip: /zip/
+
+aes:
+  key: Hankun2021040909
+  iv: Hankun2021040910
+
+---
+spring:
+  profiles: pro
+
+  datasource:
+    url: jdbc:mysql://10.250.62.230:3306/yttps_taikang?useSSL=false&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: hello123!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    tomcat:
+      test-on-borrow: true
+      validation-query: SELECT 1
+      validation-query-timeout: 1
+
+  redis:
+    host: 10.250.62.230
+    timeout: 5000ms
+    port: 6379
+    password: hello123!
+
+park:
+  ip: https://10.250.62.230:9812
+  host: 10.250.62.230
+  port: 9812
+  username: partner
+  password: partner
+
+path:
+  logger: /opt/master/log/
+  images: /opt/master/images/
+  upload: /opt/master/upload/
+  excel: /opt/master/excel/
+  name: staffInfo.xlsx
+  export: /opt/master/export/
+  zip: /opt/master/zip/
+
+url:
+  excel: /excel/
+  zip: /zip/
+
+aes:
+  key: Hankun2021040909
+  iv: Hankun2021040910

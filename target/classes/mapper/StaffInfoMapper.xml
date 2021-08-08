@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.sinsimiot.dao.StaffInfoMapper">
+    <resultMap id="BaseResultMap" type="com.eservice.sinsimiot.model.staff.StaffInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="staff_id" jdbcType="VARCHAR" property="staffId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="staff_number" jdbcType="VARCHAR" property="staffNumber"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="park_id" jdbcType="VARCHAR" property="parkId"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="entry_time" jdbcType="VARCHAR" property="entryTime"/>
+        <result column="birthday" jdbcType="VARCHAR" property="birthday"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="wechat_number" jdbcType="VARCHAR" property="wechatNumber"/>
+        <result column="photo_address" jdbcType="VARCHAR" property="photoAddress"/>
+        <result column="is_block" jdbcType="BIT" property="isBlock"/>
+        <result column="clause_id" jdbcType="VARCHAR" property="clauseId"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+        <result column="face_ids" jdbcType="LONGVARCHAR" property="faceIds"/>
+        <result column="tag_ids" jdbcType="LONGVARCHAR" property="tagIds"/>
+        <result column="meta" jdbcType="LONGVARCHAR" property="meta"/>
+    </resultMap>
+
+    <select id="selectByTagId" resultMap="BaseResultMap">
+        select * from `staff_info`
+        where 1=1
+        <foreach collection="list" item="tagId" separator=" or " open=" and ( " close=" ) ">
+            `tag_ids` like concat('%',#{tagId},'%')
+        </foreach>
+    </select>
+
+    <select id="findByCondition" resultMap="BaseResultMap">
+        select * from `staff_info`
+        where 1=1
+        <if test="condition != null and condition != ''">
+            and ( `name` like concat('%',#{condition},'%')
+            or `staff_number` like concat('%',#{condition},'%')
+            or `card_number` like concat('%',#{condition},'%')
+            or `contact` like concat('%',#{condition},'%')
+            or `email` like concat('%',#{condition},'%'))
+        </if>
+
+        <if test="parkId != null and parkId != ''">
+            and park_id=#{parkId}
+        </if>
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `tag_ids` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="areaIds != null ">
+            <foreach collection="areaIds" item="areaId" open=" and ( " close=" )" separator=" or ">
+                `tag_ids` like concat('%',#{areaId},'%')
+            </foreach>
+        </if>
+        order by `create_time` desc
+    </select>
+
+    <select id="countStaffByTagId" resultType="Integer">
+        select count(1) from `staff_info`
+        <if test="tagId != null">
+            or `tag_ids` like concat('%',#{tagId},'%')
+        </if>
+    </select>
+
+    <select id="checkStaffNumber" resultMap="BaseResultMap">
+        select  * from  `staff_info`
+        where `staff_number` = #{staffNumber}
+    </select>
+
+    <select id="checkCardNumber" resultMap="BaseResultMap">
+        select  * from  `staff_info`
+        where `card_number` = #{cardNumber}
+    </select>
+
+    <select id="checkStaffTag" resultMap="BaseResultMap">
+        select * from `staff_info` where `tag_ids`  LIKE CONCAT('%',#{tagId},'%')
+    </select>
+
+    <select id="staffInfoByTagIdCount" resultType="integer">
+        select count(1) from `staff_info`
+        where 1=1
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `tag_ids` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+    </select>
+
+    <select id="login" resultMap="BaseResultMap">
+        select * from staff_info where contact =#{account} or staff_number=#{account}  and password=#{password}
+    </select>
+
+    <select id="fetchStaffNums" resultMap="BaseResultMap">
+       select DISTINCT staff_number from `staff_info` where 1=1
+        <if test="condition != null  and condition !=''">
+            and `name` like concat('%',#{condition},'%')
+        </if>
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `tag_ids` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_number` = #{staffNum}
+        </if>
+        <if test="parkId != null and parkId != ''">
+            and park_id=#{parkId}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.sinsimiot.dao.AttendanceRecordMapper">
+    <resultMap id="BaseResultMap" type="com.eservice.sinsimiot.model.attendance_record.AttendanceRecord">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="record_id" jdbcType="VARCHAR" property="recordId"/>
+        <result column="staff_name" jdbcType="VARCHAR" property="staffName"/>
+        <result column="staff_id" jdbcType="VARCHAR" property="staffId"/>
+        <result column="staff_number" jdbcType="VARCHAR" property="staffNumber"/>
+        <result column="staff_park_name" jdbcType="VARCHAR" property="staffParkName"/>
+        <result column="staff_park_id" jdbcType="VARCHAR" property="staffParkId"/>
+        <result column="staff_tag_name" jdbcType="VARCHAR" property="staffTagName"/>
+        <result column="staff_tag_id" jdbcType="VARCHAR" property="staffTagId"/>
+        <result column="sign_device_name" jdbcType="VARCHAR" property="signDeviceName"/>
+        <result column="sign_out_device_name" jdbcType="VARCHAR" property="signOutDeviceName"/>
+        <result column="sign_time" jdbcType="VARCHAR" property="signTime"/>
+        <result column="sign_out_time" jdbcType="VARCHAR" property="signOutTime"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="BaseResultDTOMap" type="com.eservice.sinsimiot.model.attendance_record.AttendanceRecordDTO">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="record_id" jdbcType="VARCHAR" property="recordId"/>
+        <result column="staff_name" jdbcType="VARCHAR" property="staffName"/>
+        <result column="staff_id" jdbcType="VARCHAR" property="staffId"/>
+        <result column="staff_number" jdbcType="VARCHAR" property="staffNumber"/>
+        <result column="staff_park_name" jdbcType="VARCHAR" property="staffParkName"/>
+        <result column="staff_park_id" jdbcType="VARCHAR" property="staffParkId"/>
+        <result column="staff_tag_name" jdbcType="VARCHAR" property="staffTagName"/>
+        <result column="staff_tag_id" jdbcType="VARCHAR" property="staffTagId"/>
+        <result column="sign_device_name" jdbcType="VARCHAR" property="signDeviceName"/>
+        <result column="sign_out_device_name" jdbcType="VARCHAR" property="signOutDeviceName"/>
+        <result column="sign_time" jdbcType="VARCHAR" property="signTime"/>
+        <result column="sign_out_time" jdbcType="VARCHAR" property="signOutTime"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="update_time" jdbcType="BIGINT" property="updateTime"/>
+
+        <result column="normal" jdbcType="INTEGER" property="normal"/>
+        <result column="abnormal" jdbcType="INTEGER" property="abnormal"/>
+        <result column="averageTime" jdbcType="FLOAT" property="averageTime"/>
+        <result column="countTime" jdbcType="FLOAT" property="countTime"/>
+    </resultMap>
+
+
+    <select id="fetchStaffAttendance" resultMap="BaseResultMap">
+    SELECT * FROM attendance_record WHERE staff_id=#{staffId} AND sign_time LIKE CONCAT(#{signTime},'%' )
+  </select>
+
+    <select id="searchAttendance" resultMap="BaseResultMap">
+        select * from attendance_record where 1=1
+        <if test="condition != null  and condition !=''">
+            and (`staff_name` like concat('%',#{condition},'%')
+            or `staff_park_name` like concat('%',#{condition},'%')
+            or `sign_device_name` like concat('%',#{condition},'%')
+            or `sign_out_device_name` like concat('%',#{condition},'%')
+            )
+        </if>
+        <if test="parkId != null and parkId != ''">
+            and staff_park_id=#{parkId}
+        </if>
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `staff_tag_id` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_number` = #{staffNum}
+        </if>
+        <if test="signTime != null and signOutTime != ''">
+            and `sign_time` BETWEEN #{signTime} AND #{signOutTime}
+        </if>
+        ORDER BY `sign_time` DESC
+    </select>
+
+
+    <select id="appSearchAttendance" resultMap="BaseResultMap">
+        select * from attendance_record where 1=1
+        <if test="parkId != null and parkId != ''">
+            and staff_park_id=#{parkId}
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_number` = #{staffNum}
+        </if>
+        <if test="signTime != null and signTime != ''">
+            and `sign_time` like concat('',#{signTime},'%')
+        </if>
+        ORDER BY `sign_time` DESC
+    </select>
+
+
+    <select id="countAttendance" resultMap="BaseResultDTOMap">
+        select * from attendance_record where 1=1
+        <if test="condition != null  and condition !=''">
+            and (`staff_name` like concat('%',#{condition},'%')
+            or staff_park_name like concat('%',#{condition},'%')
+            or sign_device_name like concat('%',#{condition},'%')
+            or sign_out_device_name like concat('%',#{condition},'%')
+            )
+        </if>
+        <if test="parkId != null and parkId != ''">
+            and staff_park_id=#{parkId}
+        </if>
+        <if test="tagIds != null">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `staff_tag_id` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_number` = #{staffNum}
+        </if>
+        <if test="signTime != null and signOutTime != ''">
+            and `sign_time` BETWEEN #{signTime} AND #{signOutTime}
+        </if>
+        ORDER BY `sign_time` DESC
+    </select>
+
+
+    <select id="fetchStaffNum" resultMap="BaseResultMap">
+        select DISTINCT staff_number from attendance_record where 1=1
+        <if test="condition != null  and condition !=''">
+            and (`staff_name` like concat('%',#{condition},'%')
+            or staff_park_name like concat('%',#{condition},'%')
+            or sign_device_name like concat('%',#{condition},'%')
+            or sign_out_device_name like concat('%',#{condition},'%')
+            )
+        </if>
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `staff_tag_id` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_number` = #{staffNum}
+        </if>
+        <if test="signTime != null and signOutTime != ''">
+            and `sign_time` BETWEEN #{signTime} AND #{signOutTime}
+        </if>
+    </select>
+
+    <select id="fetchPark" resultMap="BaseResultMap">
+        select DISTINCT staff_park_id from attendance_record where 1=1
+        <if test="condition != null  and condition !=''">
+            and (`staff_name` like concat('%',#{condition},'%')
+            or staff_park_name like concat('%',#{condition},'%')
+            or sign_device_name like concat('%',#{condition},'%')
+            or sign_out_device_name like concat('%',#{condition},'%')
+            )
+        </if>
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `staff_tag_id` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="parkId != null and parkId != ''">
+            and staff_park_id=#{parkId}
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_number` = #{staffNum}
+        </if>
+        <if test="signTime != null and signOutTime != ''">
+            and `sign_time` BETWEEN #{signTime} AND #{signOutTime}
+        </if>
+    </select>
+
+    <select id="fetchTag" resultMap="BaseResultMap">
+        select DISTINCT staff_tag_id from attendance_record where 1=1
+        <if test="condition != null  and condition !=''">
+            and (`staff_name` like concat('%',#{condition},'%')
+            or staff_park_name like concat('%',#{condition},'%')
+            or sign_device_name like concat('%',#{condition},'%')
+            or sign_out_device_name like concat('%',#{condition},'%')
+            )
+        </if>
+        <if test="tagIds != null ">
+            <foreach collection="tagIds" item="tagId" open=" and ( " close=" )" separator=" or">
+                `staff_tag_id` like concat('%',#{tagId},'%')
+            </foreach>
+        </if>
+        <if test="parkId != null and parkId != ''">
+            and staff_park_id=#{parkId}
+        </if>
+        <if test="staffNum !=null and staffNum !=''">
+            and `staff_number` = #{staffNum}
+        </if>
+        <if test="signTime != null and signOutTime != ''">
+            and `sign_time` BETWEEN #{signTime} AND #{signOutTime}
+        </if>
+    </select>
+
+    <update id="checkRepeatRecord" parameterType="com.eservice.sinsimiot.model.attendance_record.AttendanceDTO">
+        UPDATE attendance_record SET sign_out_time=null ,sign_out_device_name=null WHERE sign_time = sign_out_time and `sign_time` BETWEEN #{signTime} AND #{signOutTime}
+    </update>
+</mapper>

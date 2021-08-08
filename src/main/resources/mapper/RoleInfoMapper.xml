@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.sinsimiot.dao.RoleInfoMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.sinsimiot.model.role.RoleInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="role_id" jdbcType="VARCHAR" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="scope" jdbcType="LONGVARCHAR" property="scope" />
+  </resultMap>
+
+
+  <select id="findByCondition" resultMap="BaseResultMap">
+    select * from `role_info`
+    where 1=1
+    <if test="condition != null and condition != ''" >
+      and ( `role_name` like concat('%',#{condition},'%')  or `remark` like concat('%',#{condition},'%')  )
+    </if>
+  </select>
+
+</mapper>

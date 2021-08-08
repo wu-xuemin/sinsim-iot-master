@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.sinsimiot.dao.LogRecordMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.sinsimiot.model.log.LogRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="log_id" jdbcType="VARCHAR" property="logId" />
+    <result column="module" jdbcType="VARCHAR" property="module" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="log_type" jdbcType="VARCHAR" property="logType" />
+    <result column="record_time" jdbcType="BIGINT" property="recordTime" />
+    <result column="message" jdbcType="LONGVARCHAR" property="message" />
+  </resultMap>
+
+  <select id="findByCondition" resultMap="BaseResultMap">
+    select * from `log_record`
+    where 1=1
+    <if test="condition != null and condition != ''">
+      and ( `operator` like concat('%',#{condition},'%')
+      or `message` like concat('%',#{condition},'%')  )
+    </if>
+    <if test="type != null and type!=''" >
+      and `log_type` = #{type}
+    </if>
+    <if test="module != null and module!=''" >
+      and `module` = #{module}
+    </if>
+    <if test="beginTime != null and endTime != null and beginTime != '' and endTime != ''">
+      and `record_time` between   #{beginTime} and #{endTime}
+    </if>
+    order by `record_time` desc
+  </select>
+</mapper>
