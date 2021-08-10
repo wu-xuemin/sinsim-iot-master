@@ -25,7 +25,7 @@ import com.eservice.sinsimiot.model.staff.StaffSearchDTO;
 import com.eservice.sinsimiot.model.tag.TagInfo;
 import com.eservice.sinsimiot.service.StaffInfoService;
 import com.eservice.sinsimiot.service.park.StaffService;
-import com.eservice.sinsimiot.service.park.TagService;
+//import com.eservice.sinsimiot.service.park.TagService;
 ///import com.hankun.master.util.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -82,8 +82,8 @@ public class StaffInfoServiceImpl extends AbstractServiceImpl<StaffInfo> impleme
     private TagInfoService tagInfoService;
 //    @Resource
 //    private ScheduledService scheduledService;
-    @Resource
-    private TagService tagService;
+//    @Resource
+//    private TagService tagService;
     @Resource
     private ParkInfoServiceImpl parkInfoService;
     @Resource
@@ -530,12 +530,12 @@ public class StaffInfoServiceImpl extends AbstractServiceImpl<StaffInfo> impleme
             log.warn("staff: {} tagId is null", staffInfo.getName());
         }
         ParkInfo parkInfo = parkInfoService.findById(staffInfo.getParkId());
-        if (parkInfoService != null) {
-            Tag tag = tagService.isExistAndAdd(parkInfo.getParkName());
-            if (tag != null) {
-                staff.setTag_id_list(Util.stringToArrayList(tag.getTag_id(), ","));
-            }
-        }
+//        if (parkInfoService != null) {
+//            Tag tag = tagService.isExistAndAdd(parkInfo.getParkName());
+//            if (tag != null) {
+//                staff.setTag_id_list(Util.stringToArrayList(tag.getTag_id(), ","));
+//            }
+//        }
         staff.setPerson_information(personInformation);
         if (staffInfo.getCardNumber() != null && !staffInfo.getCardNumber().isEmpty()) {
             staff.setCard_numbers(Util.stringToArrayList(staffInfo.getCardNumber(), ","));
@@ -572,16 +572,16 @@ public class StaffInfoServiceImpl extends AbstractServiceImpl<StaffInfo> impleme
                 personInformation.setRemark(Joiner.on(",").join(tagNames));
 
             }
-            if (!staffInfo.getParkId().equals(oldStaffInfo.getParkId())) {
-                ParkInfo parkInfo = parkInfoService.findById(staffInfo.getParkId());
-                if (parkInfo != null) {
-                    Tag tag = tagService.isExistAndAdd(parkInfo.getParkName());
-                    if (tag != null) {
-                        staff.setTag_id_list(Util.stringToArrayList(tag.getTag_id(), ","));
-                    }
-                }
-                log.info("staff :{} park is change :{}");
-            }
+//            if (!staffInfo.getParkId().equals(oldStaffInfo.getParkId())) {
+//                ParkInfo parkInfo = parkInfoService.findById(staffInfo.getParkId());
+//                if (parkInfo != null) {
+//                    Tag tag = tagService.isExistAndAdd(parkInfo.getParkName());
+//                    if (tag != null) {
+//                        staff.setTag_id_list(Util.stringToArrayList(tag.getTag_id(), ","));
+//                    }
+//                }
+//                log.info("staff :{} park is change :{}");
+//            }
             if (staffInfo.getCardNumber() != null && !staffInfo.getCardNumber().isEmpty()) {
                 staff.setCard_numbers(Util.stringToArrayList(staffInfo.getCardNumber(), ","));
             }

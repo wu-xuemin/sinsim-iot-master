@@ -50,8 +50,8 @@ public class AccessService {
     private StaffInfoService staffInfoService;
     @Resource
     private TagInfoService tagInfoService;
-    @Resource
-    private TagService tagService;
+//    @Resource
+//    private TagService tagService;
     @Resource
     private AttendanceConfigService attendanceConfigService;
 

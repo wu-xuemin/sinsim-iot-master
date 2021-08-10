@@ -12,6 +12,9 @@ spring:
 
 logging:
   file: ./log/spring.log
+  level:
+#    root: debug
+    com.eservie.sinsimiot.web: DEBUG
 
 date:
   logger: 15
