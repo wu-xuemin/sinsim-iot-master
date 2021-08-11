@@ -9,5 +9,6 @@ import java.util.List;
 public interface IotMachineMapper extends Mapper<IotMachine> {
 
     List<IotMachine> selectIotMachine(@Param("account")String  account,
-                                        @Param("nameplate")String  nameplate);
+                                      @Param("nameplate")String  nameplate,
+                                      @Param("machineModelInfo")String machineModelInfo);
 }

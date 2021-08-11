@@ -22,8 +22,8 @@ public class IotMachineServiceImpl extends AbstractServiceImpl<IotMachine> imple
     @Resource
     private IotMachineMapper iotMachineMapper;
 
-    public List<IotMachine> selectIotMachine(String account, String nameplate) {
-        return iotMachineMapper.selectIotMachine(account, nameplate);
+    public List<IotMachine> selectIotMachine(String account, String nameplate, String machineModelInfo) {
+        return iotMachineMapper.selectIotMachine(account, nameplate, machineModelInfo);
     }
 
     @Override

@@ -134,14 +134,18 @@ public class IotMachineController {
     /**
      * 根据账户、铭牌号 获取该账户名下对应的机器IOT信息
      * 比如用户可以以此查看自己的机器
+     * account:  为空时则不限账户
+     * nameplate：为空时则不限铭牌
+     * machineModelInfo：为空时不限制机器型号
      */
     @PostMapping("/selectIotMachine")
     public Result selectIotMachine(@RequestParam(defaultValue = "0") Integer page,
-                                @RequestParam(defaultValue = "0") Integer size,
-                                String account,
-                                String nameplate) {
+                                   @RequestParam(defaultValue = "0") Integer size,
+                                   @RequestParam(defaultValue = "")String account,
+                                   @RequestParam(defaultValue = "")String nameplate,
+                                   @RequestParam(defaultValue = "")String machineModelInfo) {
         PageHelper.startPage(page, size);
-        List<IotMachine> list = iotMachineService.selectIotMachine(account, nameplate);
+        List<IotMachine> list = iotMachineService.selectIotMachine(account, nameplate, machineModelInfo);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
