@@ -6,6 +6,7 @@ import com.eservice.sinsimiot.common.ResultGenerator;
 import com.eservice.sinsimiot.model.iot_machine.IotMachine;
 //import com.eservice.sinsimiot.model.user.UserDetail;
 //import com.eservice.sinsimiot.service.common.Constant;
+import com.eservice.sinsimiot.model.iot_machine.IotMachineSearchDTO;
 import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 //import com.eservice.sinsimiot.service.impl.UserServiceImpl;
 //import com.eservice.sinsimiot.service.mqtt.MqttMessageHelper;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -138,18 +140,33 @@ public class IotMachineController {
      * nameplate：为空时则不限铭牌
      * machineModelInfo：为空时不限制机器型号
      */
-    @PostMapping("/selectIotMachine")
-    public Result selectIotMachine(@RequestParam(defaultValue = "0") Integer page,
-                                   @RequestParam(defaultValue = "0") Integer size,
-                                   @RequestParam(defaultValue = "")String account,
-                                   @RequestParam(defaultValue = "")String nameplate,
-                                   @RequestParam(defaultValue = "")String machineModelInfo) {
-        PageHelper.startPage(page, size);
-        List<IotMachine> list = iotMachineService.selectIotMachine(account, nameplate, machineModelInfo);
+//    @PostMapping("/selectIotMachine")
+//    public Result selectIotMachine(@RequestParam(defaultValue = "0") Integer page,
+//                                   @RequestParam(defaultValue = "0") Integer size,
+//                                   @RequestParam(defaultValue = "")String account,
+//                                   @RequestParam(defaultValue = "")String nameplate,
+//                                   @RequestParam(defaultValue = "")String machineModelInfo) {
+//        PageHelper.startPage(page, size);
+//        List<IotMachine> list = iotMachineService.selectIotMachine(account, nameplate, machineModelInfo);
+//        PageInfo pageInfo = new PageInfo(list);
+//        return ResultGenerator.genSuccessResult(pageInfo);
+//    }
+    /**
+     * 统一按原工程的DTO方式查询.
+     * (其实之前也是DTO了，返回的整个对象全部信息，而不是一个一个地查询和获取)
+     * @param iotMachineSearchDTO
+     * @return
+     */
+    @RequestMapping(value = "/selectIotMachine", method = RequestMethod.POST)
+    public Result search(@RequestBody @NotNull IotMachineSearchDTO iotMachineSearchDTO) {
+        PageHelper.startPage(iotMachineSearchDTO.getPage(), iotMachineSearchDTO.getLimit());
+        List<IotMachine> list = iotMachineService.selectIotMachine(
+                iotMachineSearchDTO.getUser(),
+                iotMachineSearchDTO.getNameplate(),
+                iotMachineSearchDTO.getMachineModelInfo());
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
-
     /**
      * 让服务器发送MQTT消息
      * 可用于：通过发送MQTT消息，通知订阅了某topic的树莓派执行某个动作，比如把数据发给服务器

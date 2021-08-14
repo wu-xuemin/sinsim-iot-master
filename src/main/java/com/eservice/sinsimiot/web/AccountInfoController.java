@@ -12,6 +12,8 @@ import com.eservice.sinsimiot.common.Result;
 import com.eservice.sinsimiot.common.ResultGenerator;
 import com.eservice.sinsimiot.model.account.AccountDTO;
 import com.eservice.sinsimiot.service.AccountInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
@@ -33,7 +35,7 @@ import java.util.Map;
 public class AccountInfoController {
 
     private final String MODULE = "账号管理";
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
     private AccountInfoService accountInfoService;
 
@@ -228,6 +230,8 @@ public class AccountInfoController {
     public Result login(@RequestBody AccountInfo accountInfo) {
         String account = accountInfo.getAccount();
         String password = accountInfo.getPassword();
+        logger.info("========login=======");
+        logger.warn("try login account: {}, pswd is {}", accountInfo.getAccount(), accountInfo.getPassword());
         if (account == null || "".equals(account)) {
             return ResultGenerator.genFailResult(" 账号不能为空 ");
         } else if (password == null || "".equals(password)) {
