@@ -24,8 +24,8 @@ public class IotMachineSearchDTO extends SearchDTO {
         powerOnTimes = null;
         needleTotalNumber = null;
         user = null;
-        createTime = null;
-        updateTime = null;
+//        createTime = null;
+//        updateTime = null;
     }
 
     String nameplate;
@@ -40,8 +40,8 @@ public class IotMachineSearchDTO extends SearchDTO {
     String needleTotalNumber;
 
     String user;
-    Date createTime;
-    Date updateTime;
+//    Date createTime;
+//    Date updateTime;
 
     public String getNameplate() {
         return nameplate;
@@ -131,21 +131,21 @@ public class IotMachineSearchDTO extends SearchDTO {
         this.user = user;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+//    public Date getCreateTime() {
+//        return createTime;
+//    }
+//
+//    public void setCreateTime(Date createTime) {
+//        this.createTime = createTime;
+//    }
+//
+//    public Date getUpdateTime() {
+//        return updateTime;
+//    }
+//
+//    public void setUpdateTime(Date updateTime) {
+//        this.updateTime = updateTime;
+//    }
 
     @Override
     public String toString() {

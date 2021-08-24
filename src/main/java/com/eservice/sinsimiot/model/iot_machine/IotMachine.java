@@ -1,6 +1,8 @@
 package com.eservice.sinsimiot.model.iot_machine;
 
 
+import org.bson.types.ObjectId;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,7 +13,7 @@ public class IotMachine {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private ObjectId id;
 
     private String nameplate;
 
@@ -70,7 +72,7 @@ public class IotMachine {
      *
      * @return id - iot开头的都是绣花机物联网项目
      */
-    public Integer getId() {
+    public ObjectId getId() {
         return id;
     }
 
@@ -79,7 +81,7 @@ public class IotMachine {
      *
      * @param id iot开头的都是绣花机物联网项目
      */
-    public void setId(Integer id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
@@ -255,34 +257,34 @@ public class IotMachine {
         this.needleTotalNumber = needleTotalNumber;
     }
 
-    //该机器记录的首次创建时间 -->改为要记录历史记录之后，这里就作为创建时间
-    @Column(name = "create_time")
-    private Date createTime;
-
-    /**
-     * 该机器记录的更新时间 -->改为要记录历史记录之后，这里就弃用了
-     */
-    @Column(name = "update_time")
-    private Date updateTime;
+//    //该机器记录的首次创建时间 -->改为要记录历史记录之后，这里就作为创建时间
+//    @Column(name = "create_time")
+//    private Date createTime;
+//
+//    /**
+//     * 该机器记录的更新时间 -->改为要记录历史记录之后，这里就弃用了
+//     */
+//    @Column(name = "update_time")
+//    private Date updateTime;
 
     //该机器记录信息的创建账号
     private String user;
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+//    public Date getCreateTime() {
+//        return createTime;
+//    }
+//
+//    public void setCreateTime(Date createTime) {
+//        this.createTime = createTime;
+//    }
+//
+//    public Date getUpdateTime() {
+//        return updateTime;
+//    }
+//
+//    public void setUpdateTime(Date updateTime) {
+//        this.updateTime = updateTime;
+//    }
 
     public String getUser() {
         return user;
