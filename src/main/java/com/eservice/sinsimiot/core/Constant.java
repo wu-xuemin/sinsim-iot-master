@@ -37,6 +37,8 @@ public class Constant {
     public static final String ROLE_URL = "/role/info/detail/";
     public static final String IMAGE_URL = "/image";
     public static final String PUSH_URL = "/push";
+    //IOT设备发送信息，不要求带token
+    public static final String IOT_MACHINE_UPDATE_INFO_URL = "/iot/machine/updateInfo";
 
     public static final String ATTENDANCE_NORMAL = "normal";
     public static final String ATTENDANCE_ABNORMAL = "abnormal";
