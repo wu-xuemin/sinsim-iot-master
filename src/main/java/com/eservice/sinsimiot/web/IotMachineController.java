@@ -14,12 +14,15 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
 * Class Description: xxx
@@ -38,13 +41,43 @@ public class IotMachineController {
 
     private Logger logger = Logger.getLogger(IotMachineController.class);
 
-    @RequestMapping(value = "/selectIotMachines", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectIotMachine", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
-    public Object selectIotMachines(@RequestBody @NotNull IotMachineSearchDTO iotMachineSearchDTO){
+    public Object selectIotMachine( @RequestBody @NotNull IotMachineSearchDTO iotMachineSearchDTO ){
+        logger.info("selectIotMachine");
+        String account = iotMachineSearchDTO.getUser();
+        String nameplate = iotMachineSearchDTO.getNameplate();
+        String machineModelInfo = iotMachineSearchDTO.getMachineModelInfo();
 
-        List<IotMachine> list = mongoTemplate.findAll(IotMachine.class, COLLECTION_NAME);
-        PageHelper.startPage(iotMachineSearchDTO.getPage(), iotMachineSearchDTO.getLimit());
-//        return list;
+////完全匹配
+//        Pattern pattern = Pattern.compile("^张$", Pattern.CASE_INSENSITIVE);
+////右匹配
+//        Pattern pattern = Pattern.compile("^.*张$", Pattern.CASE_INSENSITIVE);
+////左匹配
+//        Pattern pattern = Pattern.compile("^张.*$", Pattern.CASE_INSENSITIVE);
+//模糊匹配
+//        Pattern pattern = Pattern.compile("^.*nameplate.*$", Pattern.CASE_INSENSITIVE);
+        Query query = new Query();
+        if( account!=null && !account.isEmpty()) {
+            Pattern pattern = Pattern.compile("^.*" + account + ".*$", Pattern.CASE_INSENSITIVE);
+            query.addCriteria(
+                    new Criteria().and("nameplate").regex(pattern)
+            );
+        }
+
+        if( nameplate!=null && !nameplate.isEmpty()) {
+            Pattern pattern = Pattern.compile("^.*" + nameplate + ".*$", Pattern.CASE_INSENSITIVE);
+                query.addCriteria(
+                        new Criteria().and("nameplate").regex(pattern)
+                );
+        }
+        if( machineModelInfo!=null && !machineModelInfo.isEmpty()) {
+            Pattern pattern = Pattern.compile("^.*" + machineModelInfo + ".*$", Pattern.CASE_INSENSITIVE);
+            query.addCriteria(
+                    new Criteria().and("machineModelInfo").regex(pattern)
+            );
+        }
+        List<IotMachine> list = mongoTemplate.find(query, IotMachine.class, COLLECTION_NAME);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
