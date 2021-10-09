@@ -2,7 +2,8 @@ spring:
   application:
     name: master
   profiles:
-    active: dev
+#    active: dev
+    active: pro
   servlet:
     multipart:
       enabled: true
@@ -12,9 +13,11 @@ spring:
 
 logging:
   file: ./log/spring.log
-  level:
+#  level:
 #    root: debug
-    com.eservie.sinsimiot.web: DEBUG
+#    com.eservie.sinsimiot.web.IotMachineController: DEBUG
+#logging.level.com.eservice.api.dao.MachineOrderMapper=DEBUG
+
 
 date:
   logger: 15
@@ -51,7 +54,7 @@ spring:
       database: sinsim_iot
       username: root
       password: hello123!
-#            uri=mongodb://192.168.145.128:27017/test66
+#      uri: mongodb://192.168.145.128:27017/test66
 #          spring.data.mongodb.uri=mongodb://192.168.145.128:27017/test66
       url: mongodb://localhost
   redis:
@@ -92,7 +95,10 @@ spring:
   profiles: pro
 
   datasource:
-    url: jdbc:mysql://10.250.62.230:3306/yttps_taikang?useSSL=false&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+#    jdbc-url: jdbc:mysql://8.130.50.136:3306/sinsim-iot-master?useSSL=false&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+# 下面的 iot_mysql 是只服务器的名称，在这里是docker；下面的sinsim-iot-master是数据库名称
+    jdbc-url: jdbc:mysql://iot_mysql:3306/sinsim-iot-master?useSSL=false&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull
+
     username: root
     password: hello123!
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -101,12 +107,23 @@ spring:
       test-on-borrow: true
       validation-query: SELECT 1
       validation-query-timeout: 1
-
-  redis:
-    host: 10.250.62.230
-    timeout: 5000ms
-    port: 6379
-    password: hello123!
+  data:
+     mongodb:
+       host: 127.0.0.1
+       port: 27017
+       database: sinsim_iot
+#          username: root
+#          password: hello123!
+       username: admin
+       password: admin
+       uri: mongodb://mongodb_iot:27017/sinsim_iot
+    #          spring.data.mongodb.uri=mongodb://192.168.145.128:27017/test66
+       url: mongodb://mongodb_iot
+#  redis:
+#    host: 10.250.62.230
+#    timeout: 5000ms
+#    port: 6379
+#    password: hello123!
 
 park:
   ip: https://10.250.62.230:9812

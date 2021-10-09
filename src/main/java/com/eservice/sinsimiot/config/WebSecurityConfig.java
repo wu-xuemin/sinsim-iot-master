@@ -38,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //todo: 这里加了，从树莓派直接访问接口，还是会被据，"Can not get token"
 //                .antMatchers(HttpMethod.POST, "/iot/machine/updateInfo").permitAll()
 //                .antMatchers(HttpMethod.POST, "/api/iot/machine/updateInfo").permitAll()
+                .antMatchers(HttpMethod.GET, "/role/info/list").permitAll()
         ;
 
     }

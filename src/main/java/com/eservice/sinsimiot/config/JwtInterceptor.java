@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtInterceptor extends HandlerInterceptorAdapter {
 
     //todo: 暂时不要求token
+    boolean debug = true;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
@@ -34,17 +35,21 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
                 || RequestMethod.OPTIONS.toString().equals(request.getMethod())) {
             return true;
         }
-        //获取header信息
-        String token = request.getHeader("token");
+        if(! debug) {
+            //获取header信息
+            String token = request.getHeader("token");
 
-        if (token == null || token.trim().isEmpty()) {
-            throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), "Can not get token.");
-        }
-        try {
-            JwtUtil.checkToken(token);
+            if (token == null || token.trim().isEmpty()) {
+                throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), "Can not get token.");
+            }
+            try {
+                JwtUtil.checkToken(token);
+                return true;
+            } catch (Exception e) {
+                throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+            }
+        } else {
             return true;
-        } catch (Exception e) {
-            throw new ServiceException(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
         }
     }
 }
