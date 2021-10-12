@@ -1,6 +1,6 @@
 package com.eservice.sinsimiot.common;
 
-import com.eservice.sinsimiot.core.ResultCode;
+import com.eservice.sinsimiot.common.ResultCode;
 
 /**
  * 响应结果生成工具

@@ -13,6 +13,7 @@ import com.eservice.sinsimiot.common.Result;
 import com.eservice.sinsimiot.common.ResultGenerator;
 import com.eservice.sinsimiot.model.staff.StaffSearchDTO;
 import com.eservice.sinsimiot.service.StaffInfoService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class StaffInfoController {
     @Value("${aes.iv}")
     private String AES_IV;
 
-
+    private Logger logger = Logger.getLogger(StaffInfo.class);
     /**
      * showdoc
      *
@@ -207,6 +208,8 @@ public class StaffInfoController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public Result search(@RequestBody @NotNull StaffSearchDTO staffSearchDTO) {
         PageHelper.startPage(staffSearchDTO.getPage(), staffSearchDTO.getLimit());
+        String account = staffSearchDTO.getAccount();
+        logger.info("staff search get account:" + account);
         List<StaffInfo> list = staffInfoService.findByCondition(staffSearchDTO);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);

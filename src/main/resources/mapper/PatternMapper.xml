@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eservice.sinsimiot.dao.PatternMapper">
+  <resultMap id="BaseResultMap" type="com.eservice.sinsimiot.model.pattern.Pattern">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="user" jdbcType="VARCHAR" property="user" />
+    <result column="pattern_name" jdbcType="VARCHAR" property="patternName" />
+    <result column="pattern_number" jdbcType="VARCHAR" property="patternNumber" />
+    <result column="needles_total" jdbcType="VARCHAR" property="needlesTotal" />
+    <result column="embroidery_time" jdbcType="VARCHAR" property="embroideryTime" />
+    <result column="parts_total_number" jdbcType="INTEGER" property="partsTotalNumber" />
+  </resultMap>
+</mapper>

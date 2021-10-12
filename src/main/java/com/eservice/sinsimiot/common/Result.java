@@ -1,7 +1,7 @@
 package com.eservice.sinsimiot.common;
 
 import com.alibaba.fastjson.JSON;
-import com.eservice.sinsimiot.core.ResultCode;
+import com.eservice.sinsimiot.common.ResultCode;
 
 /**
  * 统一API响应结果封装

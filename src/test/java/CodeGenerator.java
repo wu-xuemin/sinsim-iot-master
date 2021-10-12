@@ -19,7 +19,8 @@ import static com.eservice.sinsimiot.core.ProjectConstant.*;
  */
 public class CodeGenerator {
     //JDBC配置，请修改为你项目的实际配置
-    private static final String JDBC_URL = "jdbc:mysql://10.250.62.230:3306/yttps_taikang";
+//    private static final String JDBC_URL = "jdbc:mysql://10.250.62.230:3306/yttps_taikang";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/sinsim-iot-master?serverTimezone=UTC";
     private static final String JDBC_USERNAME = "root";
     private static final String JDBC_PASSWORD = "hello123!";
     private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
@@ -34,12 +35,19 @@ public class CodeGenerator {
     private static final String PACKAGE_PATH_SERVICE_IMPL = packageConvertPath(SERVICE_IMPL_PACKAGE);//生成的Service实现存放路径
     private static final String PACKAGE_PATH_CONTROLLER = packageConvertPath(CONTROLLER_PACKAGE);//生成的Controller存放路径
 
-    private static final String AUTHOR = "Mr.xie";//@author
+    private static final String AUTHOR = "eservice";//@author
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//@date
     //数据库的Tables需要在这里添加，自动生成Springboot的整套逻辑（基本增删改查）
 
     private static String[] TABLES = {
-            "attendance_config"
+            /**
+             * 注意：
+             * 1.生成的model中需要加 @Id。
+             * 2.生成的controller中 core.Result和 core.ResultGenerator要改为common.Result和common.ResultGenerator;
+            */
+            "pattern"
+
+
     };
     public static void main(String[] args) {
 //  在开发前期使用，可以使用TABLES的方式，后期可能会误操作导致自定义部分代码被flash掉
