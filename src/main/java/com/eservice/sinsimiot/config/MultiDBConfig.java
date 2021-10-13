@@ -50,4 +50,18 @@ public class MultiDBConfig {
         }
 
     }
+
+    //第二个mysql数据库（售后）
+    @Bean(name = "datasource_aftersale_mysql_1")
+//    @ConfigurationProperties(prefix = "spring.datasource_aftersale_mysql_1")
+    @ConfigurationProperties(prefix = "spring.datasource-aftersale-mysql-1")
+    public DataSource SecondDatasource() {
+        return  DataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "DataSourceAftersaleDbTemplate")
+    public JdbcTemplate SecondDatasourceJdbcTemplate(@Qualifier("datasource_aftersale_mysql_1")
+                                                             DataSource dsPostgres) {
+        return new JdbcTemplate(dsPostgres);
+    }
 }

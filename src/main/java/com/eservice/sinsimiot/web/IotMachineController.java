@@ -3,24 +3,24 @@ package com.eservice.sinsimiot.web;
 import com.alibaba.fastjson.JSON;
 import com.eservice.sinsimiot.common.Result;
 import com.eservice.sinsimiot.common.ResultGenerator;
-import com.eservice.sinsimiot.model.iot_machine.IotMachine;
+import com.eservice.sinsimiot.model.iot_machine.*;
 //import com.eservice.sinsimiot.model.user.UserDetail;
 //import com.eservice.sinsimiot.service.common.Constant;
-import com.eservice.sinsimiot.model.iot_machine.IotMachineSearchDTO;
 //import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 //import com.eservice.sinsimiot.service.impl.UserServiceImpl;
 //import com.eservice.sinsimiot.service.mqtt.MqttMessageHelper;
 import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mongodb.BasicDBObject;
-import com.mongodb.BasicDBObjectBuilder;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.log4j.Logger;
 //import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +52,15 @@ public class IotMachineController {
 
     @Resource
     private IotMachineServiceImpl iotMachineService;
+
+    /*
+     * 从售后数据库访问，获取机型信息等
+     * (机器的来源)
+     */
+    @Autowired
+    @Qualifier("DataSourceAftersaleDbTemplate")
+    private JdbcTemplate dataSourceAftersaleDbTemplate;
+
     private Logger logger = Logger.getLogger(IotMachineController.class);
 //2021-09-07目前卡在：按时间查询没搞通、查询效率也未知。
 
@@ -149,7 +158,7 @@ public class IotMachineController {
 //        query.limit(9);
 //        List<IotMachine> list = mongoTemplate.find(query, IotMachine.class, COLLECTION_NAME_SMALL);
         //2021-1011 主页面查询，显示的机器列表，机器铭牌不重复--难做到，所以改为把IOT机器的基本信息保存到mysql中，不包含历史数据，所以数据量小
-        List<IotMachine> list = mongoTemplate.find(query, IotMachine.class, COLLECTION_NAME );
+        List<IotMachineMongo> list = mongoTemplate.find(query, IotMachineMongo.class, COLLECTION_NAME );
 
         //findDistinct 返回的只有单一字段，比如这里只返回了去重后的nameplate字段列表。
 //        List<IotMachine> list = mongoTemplate.findDistinct(query,"nameplate",COLLECTION_NAME, IotMachine.class);
@@ -320,5 +329,20 @@ public class IotMachineController {
 
         logger.info(msg);
         return ResultGenerator.genSuccessResult(msg);
+    }
+
+    /**
+     * 从售后部 获取机器机型信息
+     */
+    @PostMapping("/getMachineModelInfoFromAftersale")
+    public Result getMachineModelInfoFromAftersale(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "0") Integer size,
+            String nameplate) {
+        PageHelper.startPage(page, size);
+        String query = "select * from machine m  where m.nameplate = 'nameplateXX'".replace("nameplateXX",nameplate);
+        List<AftersaleMachine> list = dataSourceAftersaleDbTemplate.query(query, new BeanPropertyRowMapper(AftersaleMachine.class));
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
     }
 }

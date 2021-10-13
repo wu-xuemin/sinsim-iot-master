@@ -6,13 +6,12 @@ package com.eservice.sinsimiot.model.iot_machine;
 import org.bson.types.ObjectId;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
- * 这个类是给mysql用的
+ * 这个类是给 mongodb用的
  */
 @Table(name = "iot_machine")
-public class IotMachine {
+public class IotMachineMongo {
     /**
      * iot开头的都是绣花机物联网项目
      */
@@ -22,7 +21,7 @@ public class IotMachine {
     /**
      * 在mysql里也保存iot机器的基本信息（历史信息则包含在mongodb中）
      */
-    private Integer id;
+    private ObjectId id;
 
     private String nameplate;
 
@@ -81,7 +80,7 @@ public class IotMachine {
      *
      * @return id - iot开头的都是绣花机物联网项目
      */
-    public Integer getId() {
+    public ObjectId getId() {
         return id;
     }
 
@@ -90,7 +89,7 @@ public class IotMachine {
      *
      * @param id iot开头的都是绣花机物联网项目
      */
-    public void setId(Integer id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
