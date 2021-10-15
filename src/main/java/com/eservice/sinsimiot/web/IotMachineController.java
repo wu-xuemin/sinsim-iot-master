@@ -1,6 +1,7 @@
 package com.eservice.sinsimiot.web;
 
 import com.alibaba.fastjson.JSON;
+import com.eservice.sinsimiot.common.AccessAftersaleService;
 import com.eservice.sinsimiot.common.Result;
 import com.eservice.sinsimiot.common.ResultGenerator;
 import com.eservice.sinsimiot.model.iot_machine.*;
@@ -53,6 +54,8 @@ public class IotMachineController {
     @Resource
     private IotMachineServiceImpl iotMachineService;
 
+    @Resource
+    private AccessAftersaleService accessAftersaleService;
     /*
      * 从售后数据库访问，获取机型信息等
      * (机器的来源)
@@ -340,9 +343,13 @@ public class IotMachineController {
             @RequestParam(defaultValue = "0") Integer size,
             String nameplate) {
         PageHelper.startPage(page, size);
+  
         String query = "select * from machine m  where m.nameplate = 'nameplateXX'".replace("nameplateXX",nameplate);
         List<AftersaleMachine> list = dataSourceAftersaleDbTemplate.query(query, new BeanPropertyRowMapper(AftersaleMachine.class));
         PageInfo pageInfo = new PageInfo(list);
+
+        //两种方式访问都OK,获取售后数据正常。
+//        accessAftersaleService.accessAs();
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 }
