@@ -170,4 +170,16 @@ public class Pattern {
     public void setPartsTotalNumber(Integer partsTotalNumber) {
         this.partsTotalNumber = partsTotalNumber;
     }
+
+    //花样适配哪些机型
+    @Column(name = "machine_model")
+    private String machineModel;
+
+    public String getMachineModel() {
+        return machineModel;
+    }
+
+    public void setMachineModel(String machineModel) {
+        this.machineModel = machineModel;
+    }
 }

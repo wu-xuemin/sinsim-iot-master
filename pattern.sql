@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2021-10-12 14:54:38
+Date: 2021-10-21 10:50:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,5 +27,6 @@ CREATE TABLE `pattern` (
   `needles_total` varchar(50) DEFAULT NULL COMMENT '总针数',
   `embroidery_time` varchar(50) DEFAULT NULL COMMENT '刺绣时间',
   `parts_total_number` int(10) DEFAULT NULL COMMENT '工件数量',
+  `machine_model` varchar(1000) DEFAULT NULL COMMENT '花样适配哪些机型',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;

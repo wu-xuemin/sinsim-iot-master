@@ -12,5 +12,8 @@
     <result column="needles_total" jdbcType="VARCHAR" property="needlesTotal" />
     <result column="embroidery_time" jdbcType="VARCHAR" property="embroideryTime" />
     <result column="parts_total_number" jdbcType="INTEGER" property="partsTotalNumber" />
+
+    <result column="machine_model" jdbcType="VARCHAR" property="machineModel" />
+
   </resultMap>
 </mapper>
