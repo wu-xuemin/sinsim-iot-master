@@ -302,4 +302,15 @@ public class IotMachine {
     public void setUser(String user) {
         this.user = user;
     }
+
+    //该机器的花样(虽然可以从机器的机型信息来查询出花样，但是考虑到不同的用户，可能购买不同花样，所以单独建这个字段）
+    private String pattern;
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
 }

@@ -18,6 +18,8 @@
         <result column="needle_total_number" jdbcType="VARCHAR" property="needleTotalNumber" />
 
         <result column="user" jdbcType="VARCHAR" property="user" />
+        <result column="pattern" jdbcType="VARCHAR" property="pattern" />
+
     </resultMap>
 
     <select id="selectIotMachine" resultMap="BaseResultMap">
