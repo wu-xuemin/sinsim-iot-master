@@ -27,10 +27,10 @@ public class AccessAftersaleService {
     @Value("${spring.datasource-aftersale-mysql-1.jdbc-url}")
     private String aftersale_db_url;
 
-    @Value("${spring.datasource.username}")
+    @Value("${spring.datasource-aftersale-mysql-1.username}")
     private String user_aftersale_db;
 
-    @Value("${spring.datasource.password}")
+    @Value("${spring.datasource-aftersale-mysql-1.password}")
     private String password_aftersale_db = "hello123!";
 
     /**

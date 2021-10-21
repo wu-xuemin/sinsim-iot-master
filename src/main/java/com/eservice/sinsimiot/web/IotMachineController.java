@@ -2,6 +2,7 @@ package com.eservice.sinsimiot.web;
 
 import com.alibaba.fastjson.JSON;
 import com.eservice.sinsimiot.common.AccessAftersaleService;
+import com.eservice.sinsimiot.common.AccessSinsimProcessService;
 import com.eservice.sinsimiot.common.Result;
 import com.eservice.sinsimiot.common.ResultGenerator;
 import com.eservice.sinsimiot.model.iot_machine.*;
@@ -341,15 +342,32 @@ public class IotMachineController {
     public Result getMachineModelInfoFromAftersale(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "0") Integer size,
-            String nameplate) {
+            @RequestParam(defaultValue = "")String nameplate) {
         PageHelper.startPage(page, size);
   
-        String query = "select * from machine m  where m.nameplate = 'nameplateXX'".replace("nameplateXX",nameplate);
-        List<AftersaleMachine> list = dataSourceAftersaleDbTemplate.query(query, new BeanPropertyRowMapper(AftersaleMachine.class));
-        PageInfo pageInfo = new PageInfo(list);
+//        String query = "select * from machine m  where m.nameplate = 'nameplateXX'".replace("nameplateXX",nameplate);
+//        List<AftersaleMachine> list = dataSourceAftersaleDbTemplate.query(query, new BeanPropertyRowMapper(AftersaleMachine.class));
+//        PageInfo pageInfo = new PageInfo(list);
 
         //两种方式访问都OK,获取售后数据正常。
-//        accessAftersaleService.accessAs();
+        List<AftersaleMachine> list = accessAftersaleService.accessAs();
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    /**
+     * 从生产部 获取机器类型
+     */
+    @PostMapping("/getMachineTypeListFromSinsimProcess")
+    public Result getMachineTypeListFromSinsimProcess(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "0") Integer size,
+            String nameplate) {
+        PageHelper.startPage(page, size);
+
+        List<SinsimProcessMachineType> list = accessSinsimProcessService.getMachineType();
+        PageInfo pageInfo = new PageInfo(list);
+
         return ResultGenerator.genSuccessResult(pageInfo);
     }
 }

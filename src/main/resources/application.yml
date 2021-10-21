@@ -56,6 +56,15 @@ spring:
         initSQL: SET time_zone='+00:00'
         testOnBorrow: true
         validationQuery: SELECT 1
+  datasource-sinsim_db-mysql-1:
+      jdbc-url: jdbc:mysql://localhost:3306/sinsim_db?useUnicode=true&serverTimezone=GMT%2B8&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+      username: root
+      password: hello123!
+      driver-class-name: com.mysql.jdbc.Driver
+      tomcat:
+        initSQL: SET time_zone='+00:00'
+        testOnBorrow: true
+        validationQuery: SELECT 1
   data:
     mongodb:
       host: 127.0.0.1
@@ -126,6 +135,16 @@ spring:
       initSQL: SET time_zone='+08:00'
       testOnBorrow: true
       validationQuery: SELECT 1
+
+  datasource-sinsim_db-mysql-1:
+      jdbc-url: jdbc:mysql://allinone_server_process_1:3306/sinsim_db?useUnicode=true&serverTimezone=GMT%2B8&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+      username: root
+      password: hello123!
+      driver-class-name: com.mysql.jdbc.Driver
+      tomcat:
+        initSQL: SET time_zone='+00:00'
+        testOnBorrow: true
+        validationQuery: SELECT 1
   data:
      mongodb:
        host: 127.0.0.1
