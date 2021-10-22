@@ -51,4 +51,13 @@ public class Constant {
     public static final int REISSUE = 1;
 
     public static final int RECORD_TYPE = 0;
+
+//    机器状态-【运行中】：如果能定时收到信息，且针数增加，则判断为运行中
+//    机器状态-【空   闲】：如果能定时收到信息，且针数不变，则判断为空闲
+//    机器状态-【故   障】：收到的最后信息为“故障”
+//    机器状态-【离   线】：在固定时内没收到信息，则判断为离线。
+    public static final String MACHINE_STATUS_WORKNING = "运行中";
+    public static final String MACHINE_STATUS_IDLE = "运行中";
+    public static final String MACHINE_STATUS_ERROR = "故障";
+    public static final String MACHINE_STATUS_OFFLINE = "离线";
 }

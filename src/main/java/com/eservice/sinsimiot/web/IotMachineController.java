@@ -11,6 +11,7 @@ import com.eservice.sinsimiot.model.iot_machine.*;
 //import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 //import com.eservice.sinsimiot.service.impl.UserServiceImpl;
 //import com.eservice.sinsimiot.service.mqtt.MqttMessageHelper;
+import com.eservice.sinsimiot.service.PatternService;
 import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -30,11 +31,9 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.SimpleTimeZone;
+import java.util.*;
 import java.util.regex.Pattern;
+//import com.eservice.sinsimiot.model.pattern.Pattern;
 
 /**
 * Class Description: xxx
@@ -57,6 +56,12 @@ public class IotMachineController {
 
     @Resource
     private AccessAftersaleService accessAftersaleService;
+
+    @Resource
+    private AccessSinsimProcessService accessSinsimProcessService;
+
+    @Resource
+    private PatternService patternService;
     /*
      * 从售后数据库访问，获取机型信息等
      * (机器的来源)
@@ -367,6 +372,43 @@ public class IotMachineController {
 
         List<SinsimProcessMachineType> list = accessSinsimProcessService.getMachineType();
         PageInfo pageInfo = new PageInfo(list);
+
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    /**
+     * 根据铭牌号，获取某机器的花样
+     * （都是sinsim的机器，铭牌号应该不重复）
+     */
+    @PostMapping("/getMachinePattern")
+    public Result getMachinePattern(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "0") Integer size,
+            String nameplate) {
+        PageHelper.startPage(page, size);
+
+        //先获取机器
+        IotMachine iotMachine = null;
+        List<IotMachine> iotMachineList = iotMachineService.selectIotMachine("", nameplate, "");
+       //Pattern名称冲突了 所以写完整
+        List<com.eservice.sinsimiot.model.pattern.Pattern> patternList = new ArrayList<>();
+        if(iotMachineList !=null && iotMachineList.size() !=0 ){
+            iotMachine = iotMachineList.get(0); //（都是sinsim的机器，铭牌号应该不重复, 获取唯一机器）
+
+            String strPattern = iotMachine.getPattern();
+            if(strPattern != null) {
+                String[] arrayList = null;
+                arrayList = strPattern.split(",");
+                if (arrayList != null && arrayList.length != 0) {
+                    for (int i = 0; i < arrayList.length; i++) {
+                        com.eservice.sinsimiot.model.pattern.Pattern pattern = patternService.findById(Integer.valueOf(arrayList[i]));
+                        patternList.add(pattern);
+                    }
+                }
+            }
+
+        }
+        PageInfo pageInfo = new PageInfo(patternList);
 
         return ResultGenerator.genSuccessResult(pageInfo);
     }

@@ -19,6 +19,7 @@
 
         <result column="user" jdbcType="VARCHAR" property="user" />
         <result column="pattern" jdbcType="VARCHAR" property="pattern" />
+        <result column="machine_status" jdbcType="VARCHAR" property="machineStatus" />
 
     </resultMap>
 
@@ -35,7 +36,9 @@
         im.product_total_number ,
         im.power_on_times,
         im.needle_total_number,
-        im.user
+        im.user,
+        im.pattern,
+        im.machine_status
 
         FROM
         iot_machine as im

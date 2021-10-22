@@ -313,4 +313,14 @@ public class IotMachine {
     public void setPattern(String pattern) {
         this.pattern = pattern;
     }
+
+    private String machineStatus;
+
+    public String getMachineStatus() {
+        return machineStatus;
+    }
+
+    public void setMachineStatus(String machineStatus) {
+        this.machineStatus = machineStatus;
+    }
 }
