@@ -1,16 +1,14 @@
 package com.eservice.sinsimiot.web;
 
 import com.alibaba.fastjson.JSON;
-import com.eservice.sinsimiot.common.AccessAftersaleService;
-import com.eservice.sinsimiot.common.AccessSinsimProcessService;
-import com.eservice.sinsimiot.common.Result;
-import com.eservice.sinsimiot.common.ResultGenerator;
+import com.eservice.sinsimiot.common.*;
 import com.eservice.sinsimiot.model.iot_machine.*;
 //import com.eservice.sinsimiot.model.user.UserDetail;
 //import com.eservice.sinsimiot.service.common.Constant;
 //import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 //import com.eservice.sinsimiot.service.impl.UserServiceImpl;
 //import com.eservice.sinsimiot.service.mqtt.MqttMessageHelper;
+import com.eservice.sinsimiot.service.IotMachineRepository;
 import com.eservice.sinsimiot.service.PatternService;
 import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -19,10 +17,11 @@ import org.apache.log4j.Logger;
 //import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Example;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +57,12 @@ public class IotMachineController {
     private AccessAftersaleService accessAftersaleService;
 
     @Resource
+    private PythonService pythonService;
+
+    @Value("${spring.data.pythonAccessMongo}")
+    private String pythonAccessMongo;
+
+    @Resource
     private AccessSinsimProcessService accessSinsimProcessService;
 
     @Resource
@@ -70,25 +75,42 @@ public class IotMachineController {
     @Qualifier("DataSourceAftersaleDbTemplate")
     private JdbcTemplate dataSourceAftersaleDbTemplate;
 
+    @Autowired
+    public IotMachineRepository iotMachineRepository;
+
     private Logger logger = Logger.getLogger(IotMachineController.class);
 //2021-09-07目前卡在：按时间查询没搞通、查询效率也未知。
 
     /**
      *  为什么 调用接口却没反应？ 是因为数据太太，上一次的查询一直没结束吗？
      *  --估计是这样，改成小数据量的话，
-     *
-     *
-     * @return
+     *  从monogodb查询数据。
+     *  为了提高查询速度，只支持结尾模糊的查询 --貌似NG， 那先做完全匹配--也NG
+	 
+     *  因为通过JAVA mongoTemplate 查询，6千万时间耗时约35秒，索引貌似没起效。
+     *  所以改为JAVA调用 python, python访问mongodb。
      */
     @RequestMapping(value = "/selectIotMachine", method = RequestMethod.POST)
     @Transactional(rollbackFor = Exception.class)
     public Object selectIotMachine( @RequestBody @NotNull IotMachineSearchDTO iotMachineSearchDTO ){
+        logger.info("selectIotMachine");
+        String nameplate = iotMachineSearchDTO.getNameplate();
+//        List<AftersaleMachine> list = accessAftersaleService.accessAs();
+        String result = pythonService.callPythonScript(pythonAccessMongo, nameplate);
+
+//        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(result);
+    }
+    
+    @RequestMapping(value = "/selectIotMachineByMongoTemplate", method = RequestMethod.POST)
+    @Transactional(rollbackFor = Exception.class)
+    public Object selectIotMachineByMongoTemplate( @RequestBody @NotNull IotMachineSearchDTO iotMachineSearchDTO ){
 //    public Object selectIotMachine( @RequestParam String nameplate,
 //                                    @RequestParam String machineModelInfo,
 //                                    @RequestParam String account,
 //                                    @RequestParam String queryStartTime,
 //                                    @RequestParam String queryEndTime){
-        logger.info("selectIotMachine");
+        logger.info("selectIotMachineByMongoTemplate");
         String account = iotMachineSearchDTO.getUser();
         String nameplate = iotMachineSearchDTO.getNameplate();
         String machineModelInfo = iotMachineSearchDTO.getMachineModelInfo(); ///为啥这里会执行很长时间。。。好像是因为debug断点
@@ -163,16 +185,18 @@ public class IotMachineController {
 //                            Criteria.where("inspectDate").lt(dateToISODate(calendar.getTime())),
 //                            Criteria.where("inspectDate").gte(dateToISODate(date1))));
         }
-       System.out.println("查询开始，15分钟没反应，照理查询时间很快啊。。。没加时间也卡，，/**/");
+        logger.info("mongo查询开始..."+ query.toString());
 //        query.limit(9);
 //        List<IotMachine> list = mongoTemplate.find(query, IotMachine.class, COLLECTION_NAME_SMALL);
         //2021-1011 主页面查询，显示的机器列表，机器铭牌不重复--难做到，所以改为把IOT机器的基本信息保存到mysql中，不包含历史数据，所以数据量小
         List<IotMachineMongo> list = mongoTemplate.find(query, IotMachineMongo.class, COLLECTION_NAME );
 
+//        List<IotMachineMongo> list = mongoTemplate.find(Query.query(TextCriteria.forDefaultLanguage().matching("要搜索的内容")), IotMachineMongo.class);
         //findDistinct 返回的只有单一字段，比如这里只返回了去重后的nameplate字段列表。
 //        List<IotMachine> list = mongoTemplate.findDistinct(query,"nameplate",COLLECTION_NAME, IotMachine.class);
 
-        System.out.println("查询完成, 查到了个数：" + list.size());
+
+        logger.info("mongo 查询完成, 查到了个数：" + list.size() );
         for(int i=0; i<list.size(); i++){
             Date date = new Date(Long.parseLong(Integer.parseInt(list.get(i).getId().toString().substring(0, 8), 16) + "000"));
             System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
@@ -412,4 +436,20 @@ public class IotMachineController {
 
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
+    // MongoRepository 方式查询
+//    @Test
+    @PostMapping("/findIotMachineList")
+    public Result findIotMachineList(  @RequestParam(defaultValue = "0") Integer page,
+                               @RequestParam(defaultValue = "0") Integer size,
+                               String nameplate) {
+        PageHelper.startPage(page, size);
+        IotMachine iotMachine = new IotMachine();
+        iotMachine.setNameplate(nameplate);
+        Example<IotMachine> iotMachineExample = Example.of(iotMachine);
+        List<IotMachine> iotMachineList = iotMachineRepository.findAll(iotMachineExample);
+        PageInfo pageInfo = new PageInfo(iotMachineList);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
 }

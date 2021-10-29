@@ -75,6 +75,7 @@ spring:
 #      uri: mongodb://192.168.145.128:27017/test66
 #          spring.data.mongodb.uri=mongodb://192.168.145.128:27017/test66
       url: mongodb://localhost
+    pythonAccessMongo: C:\Users\wxm\Desktop\xs\IOT\sinsim-iot-master\iot-manage\pythonAccessMongo.py
   redis:
 #    host: 10.250.62.230
     host: 127.0.0.1
