@@ -12,7 +12,9 @@ import com.eservice.sinsimiot.service.RoleInfoService;
 import com.eservice.sinsimiot.util.JwtUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 
@@ -39,7 +41,8 @@ public class RoleInfController {
     @Resource
     private LogRecordService logRecordService;
 
-    private Logger logger = Logger.getLogger(RoleInfController.class);
+//    private Logger logger = Logger.getLogger(RoleInfController.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * showdoc
@@ -205,7 +208,7 @@ public class RoleInfController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Result list() {
-        logger.info("selectIotMachine");
+        logger.info("list---");
         List<RoleInfo> list = roleInfoService.findAll();
         return ResultGenerator.genSuccessResult(list);
     }

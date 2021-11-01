@@ -13,8 +13,10 @@ import com.eservice.sinsimiot.service.PatternService;
 import com.eservice.sinsimiot.service.impl.IotMachineServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 //import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,7 +80,8 @@ public class IotMachineController {
     @Autowired
     public IotMachineRepository iotMachineRepository;
 
-    private Logger logger = Logger.getLogger(IotMachineController.class);
+//    private Logger logger = Logger.getLogger(IotMachineController.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 //2021-09-07目前卡在：按时间查询没搞通、查询效率也未知。
 
     /**

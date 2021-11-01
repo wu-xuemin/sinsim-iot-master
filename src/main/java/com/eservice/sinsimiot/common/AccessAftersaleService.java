@@ -1,7 +1,9 @@
 package com.eservice.sinsimiot.common;
 
 import com.eservice.sinsimiot.model.iot_machine.AftersaleMachine;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -45,8 +47,8 @@ public class AccessAftersaleService {
 //    @Value("${spring.datasource_sinsim_db.password}")
 //    private String password_sinsim_db;
 
-    private Logger logger = Logger.getLogger(AccessAftersaleService.class);
-
+//    private Logger logger = Logger.getLogger(AccessAftersaleService.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 //    private List<MachineInfosInProcessDb> installedNotBoundedMachineList = new ArrayList<>();
 
     public List<AftersaleMachine> accessAs() {

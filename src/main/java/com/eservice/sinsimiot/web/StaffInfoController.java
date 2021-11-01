@@ -13,7 +13,9 @@ import com.eservice.sinsimiot.common.Result;
 import com.eservice.sinsimiot.common.ResultGenerator;
 import com.eservice.sinsimiot.model.staff.StaffSearchDTO;
 import com.eservice.sinsimiot.service.StaffInfoService;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +50,8 @@ public class StaffInfoController {
     @Value("${aes.iv}")
     private String AES_IV;
 
-    private Logger logger = Logger.getLogger(StaffInfo.class);
+//    private Logger logger = Logger.getLogger(StaffInfo.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
     /**
      * showdoc
      *

@@ -1,7 +1,9 @@
 package com.eservice.sinsimiot.common;
 
 import com.eservice.sinsimiot.util.ProcessStream;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,7 +14,9 @@ import java.io.*;
 @Service
 public class PythonService {
 
-    private Logger logger = Logger.getLogger(PythonService.class);
+//    private Logger logger = Logger.getLogger(PythonService.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     public String callPythonScript(String pythonFile, String arg1Input) {
 
         logger.info("call python: " + pythonFile + ", param:" + arg1Input);
@@ -20,8 +24,8 @@ public class PythonService {
 
         String command = pythonFile;// C:\Users\wxm\Desktop\xs\IOT\sinsim-iot-master\iot-manage\pythonAccessMongo.py
         String params = arg1Input;//
-        params = "\"" + params + "\"";
-        String[] cmd = new String[]{"python",command,params};
+     //   params = "\"" + params + "\"";
+        String[] cmd = new String[]{"python3",command,params};
         String charset = "UTF-8";
 //        Map<String,Object> rtnMap = new HashMap<>();
         StringBuffer rtnSb = new StringBuffer();

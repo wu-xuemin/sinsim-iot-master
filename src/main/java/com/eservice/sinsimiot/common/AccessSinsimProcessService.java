@@ -2,7 +2,9 @@ package com.eservice.sinsimiot.common;
 
 import com.eservice.sinsimiot.model.iot_machine.AftersaleMachine;
 import com.eservice.sinsimiot.model.iot_machine.SinsimProcessMachineType;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +35,8 @@ public class AccessSinsimProcessService {
     @Value("${spring.datasource-sinsim_db-mysql-1.password}")
     private String password_sinsim_db;
 
-    private Logger logger = Logger.getLogger(AccessSinsimProcessService.class);
+//    private Logger logger = Logger.getLogger(AccessSinsimProcessService.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<SinsimProcessMachineType> getMachineType() {
         List<SinsimProcessMachineType> sinsimProcessMachineTypeList = null;

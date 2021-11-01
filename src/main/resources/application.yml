@@ -11,8 +11,17 @@ spring:
       max-file-size: 2048MB
       max-request-size: 2048MB
 
-logging:
-  file: ./log/spring.log
+#logging:
+#  file: C:\Users\wxm\Desktop\xs\IOT\sinsim-iot-master\iot-manage\log\sinsim_iot.log
+
+#无作用
+#log4j:
+#  appender:
+#    dailyFile:
+#      File: C:/Users/wxm/Desktop/xs/IOT/sinsim-iot-master/iot-manage/spring_iot.log
+#    config: logback-spring.xml
+#  level:
+#    root: info
 #  level:
 #    root: debug
 #    com.eservie.sinsimiot.web.IotMachineController: DEBUG
@@ -161,6 +170,7 @@ spring:
     #          spring.data.mongodb.uri=mongodb://192.168.145.128:27017/test66
 #       url: mongodb://mongodb_iot
        url: mongodb://admin:admin@mongodb_iot:27017/?authSource=admin
+     pythonAccessMongo: /home/sinsim_iot/pythonAccessMongo.py
 
 #  redis:
 #    host: 10.250.62.230
