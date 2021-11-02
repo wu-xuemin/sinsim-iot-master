@@ -170,8 +170,10 @@ spring:
     #          spring.data.mongodb.uri=mongodb://192.168.145.128:27017/test66
 #       url: mongodb://mongodb_iot
        url: mongodb://admin:admin@mongodb_iot:27017/?authSource=admin
-     pythonAccessMongo: /home/sinsim_iot/pythonAccessMongo.py
-
+#     pythonAccessMongo: /home/sinsim_iot/pythonAccessMongo.py
+#docker对应如下路径，主机对应在/home/sinsim_iot/upload-data/
+#编辑主机下的文件，即可更改docker里的文件。方便。
+     pythonAccessMongo: /opt/sinsim_iot/upload-data/pythonAccessMongo.py
 #  redis:
 #    host: 10.250.62.230
 #    timeout: 5000ms

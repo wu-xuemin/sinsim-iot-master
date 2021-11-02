@@ -25,6 +25,14 @@ public class PythonService {
         String command = pythonFile;// C:\Users\wxm\Desktop\xs\IOT\sinsim-iot-master\iot-manage\pythonAccessMongo.py
         String params = arg1Input;//
      //   params = "\"" + params + "\"";
+        File pythonFileExist = null;
+        pythonFileExist = new File(pythonFile);
+        if (!pythonFileExist.exists()) {
+            logger.info(pythonFileExist + " 不存在");
+            return pythonFileExist +" 不存在";
+        } else {
+            logger.info(pythonFileExist + "文件存在OK");
+        }
         String[] cmd = new String[]{"python3",command,params};
         String charset = "UTF-8";
 //        Map<String,Object> rtnMap = new HashMap<>();
