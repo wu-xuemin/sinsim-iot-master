@@ -314,6 +314,19 @@ public class IotMachine {
         this.pattern = pattern;
     }
 
+    //最后报上来的状态（运行中、故障、空闲），这个状态表明了机器的最后状态
+    @Column(name = "last_status")
+    private String lastStatus;
+
+    public String getLastStatus() {
+        return lastStatus;
+    }
+
+    public void setLastStatus(String lastStatus) {
+        this.lastStatus = lastStatus;
+    }
+
+    //机器真实状态，是在last_status基础上更新是否离线
     private String machineStatus;
 
     public String getMachineStatus() {
@@ -322,5 +335,29 @@ public class IotMachine {
 
     public void setMachineStatus(String machineStatus) {
         this.machineStatus = machineStatus;
+    }
+
+    //该机器记录的创建时间
+    @Column(name = "created_time")
+    private Date createdTime;
+
+    //该机器记录的最后更新时间, 可用于判断是否离线
+    @Column(name = "updated_time")
+    private Date updatedTime;
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }

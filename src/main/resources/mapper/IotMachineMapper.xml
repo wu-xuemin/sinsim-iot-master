@@ -19,7 +19,12 @@
 
         <result column="user" jdbcType="VARCHAR" property="user" />
         <result column="pattern" jdbcType="VARCHAR" property="pattern" />
+
+        <result column="last_status" jdbcType="VARCHAR" property="lastStatus" />
         <result column="machine_status" jdbcType="VARCHAR" property="machineStatus" />
+
+        <result column="created_time" jdbcType="TIMESTAMP" property="createdTime"/>
+        <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime"/>
 
     </resultMap>
 
@@ -38,7 +43,10 @@
         im.needle_total_number,
         im.user,
         im.pattern,
-        im.machine_status
+        im.last_status,
+        im.machine_status,
+        im.created_time,
+        im.updated_time
 
         FROM
         iot_machine as im

@@ -20,7 +20,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `iot_machine`;
 CREATE TABLE `iot_machine` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'iot开头的都是绣花机物联网项目',
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'iot开头的都是绣花机物联网项目',
   `nameplate` varchar(255) DEFAULT NULL,
   `machine_model_info` varchar(255) DEFAULT NULL COMMENT '机型信息',
   `uptime` varchar(255) DEFAULT NULL COMMENT '已开机的时间',
@@ -33,6 +33,9 @@ CREATE TABLE `iot_machine` (
   `needle_total_number` varchar(50) DEFAULT NULL COMMENT '累计针数',
   `user` varchar(50) DEFAULT NULL COMMENT '该机器记录信息的创建账号',
   `pattern` varchar(1000) DEFAULT NULL COMMENT '该机器的花样(考虑到不同的用户，可能购买不同花样）',
-  `machine_status` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '机器状态-【运行中】：如果能定时收到信息，且针数增加，则判断为运行中\n机器状态-【空   闲】：如果能定时收到信息，且针数不变，则判断为空闲\n机器状态-【故   障】：收到的最后信息为“故障”\n机器状态-【离   线】：在固定时内没收到信息，则判断为离线。',
+  `last_status` varchar(10) DEFAULT NULL COMMENT '最后报上来的状态（运行中、故障、空闲），这个状态表明了机器的最后状态',
+  `machine_status` varchar(255) DEFAULT NULL COMMENT '机器真实状态，是在last_status基础上更新是否离线',
+  `created_time` datetime DEFAULT NULL COMMENT '该机器记录的创建时间',
+  `updated_time` datetime DEFAULT NULL COMMENT '该机器记录的最后更新时间, 可用于判断是否离线',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb3;

@@ -352,14 +352,18 @@ public class IotMachineController {
         /** 2021-1011
          * 用mongoTemplate.findDistinct去重,只返回单一字段。不支持多字段返回
          * 用mongoTemplate.aggregate去重，排序是查询效率会变的非常低。暂时不明确方法，待续
-         * 所以，同时在mysql里也存储基本信息（不包含历史信息），目前用于WEB/APP主页查询
+         * 所以，同时在mysql里也存储基本信息（不包含历史信息），包括当前状态（运行中、故障、空闲），这个状态表明了机器的最后状态
+         * 目前用于WEB/APP主页查询
          */
         List<IotMachine> iotMachineExistList = iotMachineService.selectIotMachine(account,
                 iotMachine1.getNameplate(),iotMachine1.getMachineModelInfo());
         if(iotMachineExistList != null& iotMachineExistList.size()!= 0){
-            logger.info(iotMachine1.getNameplate() + "，该机器基本信息 已经存在，不需要记录到mysql");
+            logger.info(iotMachine1.getNameplate() + "，该机器基本信息 已经存在，不需要新增记录到mysql，只需要更新");
+            iotMachine1.setUpdatedTime(new Date());
+            iotMachineService.update(iotMachine1);
         } else {
             logger.info(iotMachine1.getNameplate() + ",需记录该机器的基本信息到mysql");
+            iotMachine1.setCreatedTime(new Date());
             iotMachineService.save(iotMachine1);
         }
 
