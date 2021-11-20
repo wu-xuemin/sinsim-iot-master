@@ -28,11 +28,14 @@ public class IotMachineServiceImpl extends AbstractServiceImpl<IotMachine> imple
 
     @Override
     public boolean save(IotMachine model) {
-        return false;
+        //原先没有做，没有保存成功
+        iotMachineMapper.insert(model);
+        return true;
     }
 
     @Override
     public boolean update(IotMachine model) {
+        iotMachineMapper.updateByPrimaryKey(model);
         return false;
     }
 }

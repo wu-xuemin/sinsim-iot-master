@@ -2,6 +2,7 @@ package com.eservice.sinsimiot.web;
 
 import com.alibaba.fastjson.JSON;
 import com.eservice.sinsimiot.common.*;
+import com.eservice.sinsimiot.core.Constant;
 import com.eservice.sinsimiot.model.iot_machine.*;
 //import com.eservice.sinsimiot.model.user.UserDetail;
 //import com.eservice.sinsimiot.service.common.Constant;
@@ -339,15 +340,15 @@ public class IotMachineController {
 
         logger.info("updateInfo:" + iotMachine + ", account:" + account);
 
-        IotMachine iotMachine1 = JSON.parseObject(iotMachine, IotMachine.class);
+        IotMachineMongo iotMachineMongo = JSON.parseObject(iotMachine, IotMachineMongo.class);
         String msg = null;
-        if (iotMachine1 == null) {
+        if (iotMachineMongo == null) {
             msg = "iotMachine1对象JSON解析失败！";
 //            logger.warn(msg);
             return ResultGenerator.genFailResult(msg);
         }
-        iotMachine1.setUser(account);
-        mongoTemplate.save( iotMachine1, COLLECTION_NAME);
+        iotMachineMongo.setUser(account);
+        mongoTemplate.save( iotMachineMongo, COLLECTION_NAME);
 
         /** 2021-1011
          * 用mongoTemplate.findDistinct去重,只返回单一字段。不支持多字段返回
@@ -355,16 +356,34 @@ public class IotMachineController {
          * 所以，同时在mysql里也存储基本信息（不包含历史信息），包括当前状态（运行中、故障、空闲），这个状态表明了机器的最后状态
          * 目前用于WEB/APP主页查询
          */
-        List<IotMachine> iotMachineExistList = iotMachineService.selectIotMachine(account,
-                iotMachine1.getNameplate(),iotMachine1.getMachineModelInfo());
+        List<IotMachine> iotMachineExistList = iotMachineService.selectIotMachine(
+                account,
+                iotMachineMongo.getNameplate(),
+                iotMachineMongo.getMachineModelInfo());
+        IotMachine iotMachine1 = new IotMachine();
         if(iotMachineExistList != null& iotMachineExistList.size()!= 0){
-            logger.info(iotMachine1.getNameplate() + "，该机器基本信息 已经存在，不需要新增记录到mysql，只需要更新");
+            iotMachine1 = iotMachineExistList.get(0);//是唯一
+            logger.info(iotMachineMongo.getNameplate() + "，该机器基本信息 已经存在，不需要新增记录到mysql，只需要更新");
             iotMachine1.setUpdatedTime(new Date());
             iotMachineService.update(iotMachine1);
         } else {
-            logger.info(iotMachine1.getNameplate() + ",需记录该机器的基本信息到mysql");
+            logger.info(iotMachineMongo.getNameplate() + ",需新增记录该机器的基本信息到mysql");
+            iotMachine1.setLineBrokenNumber(iotMachineMongo.getLineBrokenNumber());
+            iotMachine1.setLineBrokenAverageTime(iotMachineMongo.getLineBrokenAverageTime());
+            iotMachine1.setLastStatus(iotMachineMongo.getLastStatus());
+            iotMachine1.setMachineModelInfo(iotMachineMongo.getMachineModelInfo());
+            iotMachine1.setNameplate(iotMachineMongo.getNameplate());
+            iotMachine1.setNonworkingTime(iotMachineMongo.getNonworkingTime());
+            iotMachine1.setNeedleTotalNumber(iotMachineMongo.getNeedleTotalNumber());
+            iotMachine1.setPowerOnTimes(iotMachineMongo.getPowerOnTimes());
+            iotMachine1.setProductTotalNumber(iotMachineMongo.getProductTotalNumber());
+            iotMachine1.setPattern(iotMachineMongo.getPattern());
+            iotMachine1.setWorkingTime(iotMachineMongo.getWorkingTime());
+            iotMachine1.setUptime(iotMachineMongo.getUptime());
+            iotMachine1.setUser(iotMachineMongo.getUser());
             iotMachine1.setCreatedTime(new Date());
             iotMachine1.setUpdatedTime(new Date());
+            iotMachine1.setMachineStatus(iotMachineMongo.getMachineStatus());
             iotMachineService.save(iotMachine1);
         }
 

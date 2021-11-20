@@ -59,7 +59,7 @@ public class scheduleTasks {
 
             machineUpdateTimeLong =   iotMachineExistList.get(i).getUpdatedTime().getTime();
             differenceMinutes = (nowDateLong - machineUpdateTimeLong) / (1000 * 60);
-            logger.info("差了分钟数：" + differenceMinutes);
+            //logger.info("差了分钟数：" + differenceMinutes);
             if(differenceMinutes/60 > Constant.scheduleHours){
                 if( ! iotMachineExistList.get(i).getMachineStatus().equals(Constant.MACHINE_STATUS_OFFLINE)) {
                     iotMachineExistList.get(i).setMachineStatus(Constant.MACHINE_STATUS_OFFLINE);

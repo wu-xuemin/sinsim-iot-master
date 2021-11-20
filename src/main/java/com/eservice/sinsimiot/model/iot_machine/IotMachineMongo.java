@@ -6,6 +6,7 @@ package com.eservice.sinsimiot.model.iot_machine;
 import org.bson.types.ObjectId;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 这个类是给 mongodb用的
@@ -300,5 +301,63 @@ public class IotMachineMongo {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    //该机器的花样(虽然可以从机器的机型信息来查询出花样，但是考虑到不同的用户，可能购买不同花样，所以单独建这个字段）
+    private String pattern;
+
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    //最后报上来的状态（运行中、故障、空闲），这个状态表明了机器的最后状态
+    @Column(name = "last_status")
+    private String lastStatus;
+
+    public String getLastStatus() {
+        return lastStatus;
+    }
+
+    public void setLastStatus(String lastStatus) {
+        this.lastStatus = lastStatus;
+    }
+
+    //机器真实状态，是在last_status基础上更新是否离线
+    private String machineStatus;
+
+    public String getMachineStatus() {
+        return machineStatus;
+    }
+
+    public void setMachineStatus(String machineStatus) {
+        this.machineStatus = machineStatus;
+    }
+
+    //该机器记录的创建时间
+    @Column(name = "created_time")
+    private Date createdTime;
+
+    //该机器记录的最后更新时间, 可用于判断是否离线
+    @Column(name = "updated_time")
+    private Date updatedTime;
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }
