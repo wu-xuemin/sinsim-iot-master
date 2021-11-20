@@ -32,6 +32,7 @@
         SELECT
 --         写为*会重复，必须一个个字段列出
         DISTINCT (im.nameplate),
+        im.id,
         im.machine_model_info,
         im.uptime ,
         im.working_time ,

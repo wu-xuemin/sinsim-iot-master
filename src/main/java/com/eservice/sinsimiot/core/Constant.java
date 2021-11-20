@@ -57,7 +57,13 @@ public class Constant {
 //    机器状态-【故   障】：收到的最后信息为“故障”
 //    机器状态-【离   线】：在固定时内没收到信息，则判断为离线。
     public static final String MACHINE_STATUS_WORKNING = "运行中";
-    public static final String MACHINE_STATUS_IDLE = "运行中";
+    public static final String MACHINE_STATUS_IDLE = "空闲";
     public static final String MACHINE_STATUS_ERROR = "故障";
     public static final String MACHINE_STATUS_OFFLINE = "离线";
+
+    /**
+     * 绣花机pi，上传数据库的时间段（每scheduleHours个小时上传一次）
+     * updated_time距离当前时间超过了定时更新的时间间隔，则判断为离线。
+     */
+    public static final int scheduleHours = 3;
 }

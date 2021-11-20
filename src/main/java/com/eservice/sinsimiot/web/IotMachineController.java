@@ -364,6 +364,7 @@ public class IotMachineController {
         } else {
             logger.info(iotMachine1.getNameplate() + ",需记录该机器的基本信息到mysql");
             iotMachine1.setCreatedTime(new Date());
+            iotMachine1.setUpdatedTime(new Date());
             iotMachineService.save(iotMachine1);
         }
 
