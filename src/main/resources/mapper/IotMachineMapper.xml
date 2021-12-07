@@ -63,4 +63,20 @@
         </if>
     </select>
 
+    <select id="selectIotMachineInXStatus"  resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            iot_machine im
+        WHERE 1=1
+
+        <if test="account != null and account != ''">
+            and im.`user`  = #{account}
+        </if>
+
+        <if test="machineStatus != null and machineStatus != ''">
+            and im.`machine_status`  = #{machineStatus}
+        </if>
+    </select>
+
 </mapper>

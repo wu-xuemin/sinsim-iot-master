@@ -65,7 +65,6 @@ public class scheduleTasks {
                     iotMachineExistList.get(i).setMachineStatus(Constant.MACHINE_STATUS_OFFLINE);
                     iotMachineService.update(iotMachineExistList.get(i));
                     logger.info( "该机器超时未上报，判断为离线，且更新为离线 " + iotMachineExistList.get(i).getNameplate());
-					//todo: 目前的 iotMachineService.update 没生效。。。
                 }
             }
         }

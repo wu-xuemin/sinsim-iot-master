@@ -225,6 +225,41 @@ public class IotMachineController {
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+	
+    /**
+     * 统计机器的X状态的数量
+     * 如果加了 account就统计该账号名下的机器的各个状态的数量
+     */
+    @PostMapping("/selectIotMachineInXStatus")
+    public Result selectIotMachineInXStatus(  @RequestParam(defaultValue = "0") Integer page,
+                                              @RequestParam(defaultValue = "0") Integer size,
+                                              String account,
+                                              String machineStatus) {
+        PageHelper.startPage(page, size);
+        List<IotMachine> list = iotMachineService.selectIotMachineInXStatus(account, machineStatus);
+        PageInfo pageInfo = new PageInfo(list);
+        return ResultGenerator.genSuccessResult(pageInfo);
+    }
+
+    /**
+     * 统计机器的各个状态的数量
+     * 如果加了 account就统计该账号名下的机器的各个状态的数量
+     */
+    @PostMapping("/machineStatusStatistics")
+    public Result machineStatusStatistics(String account) {
+
+
+        List<IotMachine> listWorking = iotMachineService.selectIotMachineInXStatus(account, Constant.MACHINE_STATUS_WORKNING);
+        List<IotMachine> listIdle = iotMachineService.selectIotMachineInXStatus(account, Constant.MACHINE_STATUS_IDLE);
+        List<IotMachine> listError = iotMachineService.selectIotMachineInXStatus(account, Constant.MACHINE_STATUS_ERROR);
+        List<IotMachine> listOffLine = iotMachineService.selectIotMachineInXStatus(account, Constant.MACHINE_STATUS_OFFLINE);
+
+        return ResultGenerator.genSuccessResult(
+                "listWorking:" + listWorking.size()
+                + ",listIdle:" + listIdle.size()
+                + ",listError:" + listError.size()
+                + ",listOffLine:" + listOffLine.size());
+    }
 
     //根据 ObjectId查询
 //    import org.bson.types.ObjectId;
@@ -478,5 +513,6 @@ public class IotMachineController {
         PageInfo pageInfo = new PageInfo(iotMachineList);
         return ResultGenerator.genSuccessResult(pageInfo);
     }
+
 
 }

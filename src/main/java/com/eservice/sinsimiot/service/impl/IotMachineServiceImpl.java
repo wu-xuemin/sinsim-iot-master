@@ -26,6 +26,10 @@ public class IotMachineServiceImpl extends AbstractServiceImpl<IotMachine> imple
         return iotMachineMapper.selectIotMachine(account, nameplate, machineModelInfo);
     }
 
+    public List<IotMachine> selectIotMachineInXStatus(String account, String machineStatus) {
+        return iotMachineMapper.selectIotMachineInXStatus(account, machineStatus);
+    }
+
     @Override
     public boolean save(IotMachine model) {
         //原先没有做，没有保存成功

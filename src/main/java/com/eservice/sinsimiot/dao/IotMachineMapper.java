@@ -14,4 +14,9 @@ public interface IotMachineMapper extends Mapper<IotMachine> {
                                       @Param("machineModelInfo")String machineModelInfo);
 //
 //    List<IotMachine> selectIotMachine(IotMachineSearchDTO iotMachineSearchDTO);
+
+    List<IotMachine> selectIotMachineInXStatus(@Param("account")String  account,
+                                      @Param("machineStatus")String  machineStatus);
+
+
 }
