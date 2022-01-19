@@ -8,6 +8,8 @@ import com.eservice.sinsimiot.model.log.LogRecord;
 import com.eservice.sinsimiot.service.LogRecordService;
 import com.eservice.sinsimiot.util.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,7 @@ public class LogRecordServiceImpl extends AbstractServiceImpl<LogRecord> impleme
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Resource
     private LogRecordMapper logRecordMapper;
 

@@ -10,6 +10,8 @@ import com.eservice.sinsimiot.model.park.DeviceSearchDTO;
 import com.eservice.sinsimiot.model.park_info.ParkInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -46,7 +48,7 @@ public class DeviceService {
     private String token;
 
     private List<DeviceInfo> deviceInfoList = new ArrayList<>();
-
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Scheduled(initialDelay = 2000, fixedDelay = 1000 * 60)
     public void fetchDeviceList() {
         try {

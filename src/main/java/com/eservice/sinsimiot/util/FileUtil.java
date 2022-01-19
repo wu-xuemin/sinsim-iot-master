@@ -3,6 +3,8 @@ package com.eservice.sinsimiot.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipOutputStream;
@@ -18,7 +20,7 @@ import java.io.*;
 public class FileUtil {
 
     private static int BUFFER_SIZE = 2 * 1024;
-
+    private Logger log = LoggerFactory.getLogger(getClass());
     /**
      * 获取文件的MD5值
      *
@@ -195,7 +197,7 @@ public class FileUtil {
             File sourceFile = new File(srcDir);
             compress(sourceFile, zos, sourceFile.getName(), keepDirStructure);
             long end = System.currentTimeMillis();
-            log.info("toZip time consumming : {} ms", end - start);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

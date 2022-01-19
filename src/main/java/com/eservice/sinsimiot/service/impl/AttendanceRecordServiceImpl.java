@@ -20,6 +20,8 @@ import com.eservice.sinsimiot.service.StaffInfoService;
 import com.eservice.sinsimiot.util.DateUtil;
 import com.eservice.sinsimiot.util.Util;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -61,6 +63,7 @@ public class AttendanceRecordServiceImpl extends AbstractServiceImpl<AttendanceR
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Override
     public boolean save(AttendanceRecord model) {
         model.setRecordId(UUID.randomUUID().toString());

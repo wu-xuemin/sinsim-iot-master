@@ -3,6 +3,8 @@ package com.eservice.sinsimiot.config;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -20,14 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class LogAspectConfig {
 
-
+    private Logger log = LoggerFactory.getLogger(getClass());
     /**
      * @Description: 定义切入点
      * @Title: pointCut
      * @author OnlyMate
      * @Date 2018年9月10日 下午3:52:17
      */
-    @Pointcut("execution(public * com.hankun.*.web.*.*(..))")
+    @Pointcut("execution(public * com.eservice.*.web.*.*(..))")
     public void pointCut() {
         log.info(" 【注解：PointCut】 不会进！！！ ");
     }

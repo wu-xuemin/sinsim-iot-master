@@ -29,6 +29,8 @@ import com.eservice.sinsimiot.service.park.StaffService;
 ///import com.hankun.master.util.*;
 import lombok.extern.slf4j.Slf4j;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -92,7 +94,7 @@ public class StaffInfoServiceImpl extends AbstractServiceImpl<StaffInfo> impleme
     private LogRecordService logRecordService;
     @Resource
     private DepartingStaffService departingStaffService;
-
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Override
     public File unZipFile(MultipartFile multipartFile, String password) {
         try {

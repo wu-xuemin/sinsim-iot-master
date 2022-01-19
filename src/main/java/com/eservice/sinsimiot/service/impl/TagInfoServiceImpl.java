@@ -7,6 +7,8 @@ import com.eservice.sinsimiot.dao.TagInfoMapper;
 import com.eservice.sinsimiot.model.staff.StaffSearchDTO;
 import com.eservice.sinsimiot.model.tag.TagInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ public class TagInfoServiceImpl extends AbstractServiceImpl<TagInfo> implements 
     @Resource
     private ParkInfoService parkInfoService;
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Override
     public List<String> selectTagNameByTagId(List<String> tagIds) {
         try {

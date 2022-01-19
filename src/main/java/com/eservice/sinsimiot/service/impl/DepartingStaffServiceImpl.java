@@ -9,6 +9,8 @@ import com.eservice.sinsimiot.model.departing_staff.DepartingStaff;
 import com.eservice.sinsimiot.model.staff.StaffSearchDTO;
 import com.eservice.sinsimiot.service.StaffInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ public class DepartingStaffServiceImpl extends AbstractServiceImpl<DepartingStaf
     @Resource
     private StaffInfoService staffInfoService;
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Override
     public boolean save(DepartingStaff model) {
         model.setCreateTime(System.currentTimeMillis());

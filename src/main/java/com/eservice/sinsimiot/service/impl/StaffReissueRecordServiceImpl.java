@@ -15,6 +15,8 @@ import com.eservice.sinsimiot.model.staff_reissue_record.StaffReissueRecord;
 ///import com.hankun.master.service.*;
 import com.eservice.sinsimiot.util.Util;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,7 @@ public class StaffReissueRecordServiceImpl extends AbstractServiceImpl<StaffReis
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
+    private Logger log = LoggerFactory.getLogger(getClass());
     @Override
     public boolean save(StaffReissueRecord model) {
         model.setId(UUID.randomUUID().toString());
