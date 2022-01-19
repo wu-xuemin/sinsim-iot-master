@@ -45,7 +45,8 @@ public class CodeGenerator {
              * 1.生成的model中需要加 @Id。
              * 2.生成的controller中 core.Result和 core.ResultGenerator要改为common.Result和common.ResultGenerator;
             */
-            "pattern"
+//            "pattern"
+            "malfunction"
 
 
     };

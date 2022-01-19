@@ -1,6 +1,7 @@
 package com.eservice.sinsimiot.web;
-import com.eservice.sinsimiot.core.Result;
-import com.eservice.sinsimiot.core.ResultGenerator;
+
+import com.eservice.sinsimiot.common.Result;
+import com.eservice.sinsimiot.common.ResultGenerator;
 import com.eservice.sinsimiot.model.malfunction.Malfunction;
 import com.eservice.sinsimiot.service.MalfunctionService;
 import com.github.pagehelper.PageHelper;
